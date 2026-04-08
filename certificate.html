@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Property Certificate</title></head>
+<body style="font-family:Georgia;padding:40px;max-width:700px;margin:auto">
+<h2 style="text-align:center;color:#8B4513">Government of Karnataka</h2>
+<p style="text-align:center">Revenue Department - Bhoomi Digital Land Records</p>
+<hr>
+<h3 style="text-align:center;color:#2c5530">PROPERTY OWNERSHIP CERTIFICATE</h3>
+<div id="content"></div>
+<button onclick="window.print()" style="display:block;margin:20px auto;padding:10px 30px;background:#2c5530;color:white;border:none;border-radius:5px;cursor:pointer">Print / Save as PDF</button>
+<script>
+const p = new URLSearchParams(window.location.search);
+document.getElementById('content').innerHTML = 
+  '<table style="width:100%;border-collapse:collapse">' +
+  '<tr><td style="padding:10px;font-weight:bold">Property ID</td><td>'+p.get('id')+'</td></tr>' +
+  '<tr><td style="padding:10px;font-weight:bold">Owner</td><td>'+p.get('owner')+'</td></tr>' +
+  '<tr><td style="padding:10px;font-weight:bold">Type</td><td>'+p.get('type')+'</td></tr>' +
+  '<tr><td style="padding:10px;font-weight:bold">Area</td><td>'+p.get('area')+'</td></tr>' +
+  '<tr><td style="padding:10px;font-weight:bold">Date</td><td>'+new Date().toLocaleDateString('en-IN')+'</td></tr>' +
+  '</table>' +
+  '<div style="text-align:center;padding:15px;border:2px solid #2c5530;border-radius:8px;margin:20px 0">' +
+  '<p style="color:#2c5530;font-size:18px;font-weight:bold">DIGITALLY VERIFIED</p></div>';
+</script>
+</body>
+</html>
