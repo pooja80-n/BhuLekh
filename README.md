@@ -1,232 +1,170 @@
-# BhoomiAI Backend — Setup Guide
+# BhuLekhAI – Digital Land & Property Records Management System
 
-Complete REST API for the BhoomiAI Digital Land Records system.
-Built with **Node.js + Express + SQLite**.
-
----
-
-## 📁 Folder Structure
-
-```
-bhoomi-backend/
-├── server.js           ← Main entry point
-├── package.json        ← Dependencies
-├── .env.example        ← Copy to .env and fill in
-├── api.js              ← Frontend API connector (copy to your frontend folder)
-├── db/
-│   ├── schema.js       ← SQLite schema (auto-creates all tables)
-│   └── seed.js         ← Seed with demo data
-├── routes/
-│   ├── auth.js         ← Login / logout / me
-│   ├── properties.js   ← Full CRUD + list/unlist
-│   ├── bids.js         ← Bidding system
-│   ├── requests.js     ← Purchase requests
-│   ├── ai.js           ← Fraud check, doc verify, chatbot, schemes
-│   └── users.js        ← User management + stats
-├── middleware/
-│   └── auth.js         ← JWT verify + role guard + activity logger
-└── uploads/            ← Document uploads (auto-created)
-```
+A full-stack web application inspired by Karnataka's Bhoomi portal for secure digital land record management. The system provides separate dashboards for administrators and citizens, enabling efficient property management, ownership verification, fraud detection, document verification, and property marketplace services.
 
 ---
 
-## 🚀 Quick Start
+## Features
 
-### Step 1 — Install dependencies
-```bash
-cd bhoomi-backend
+### Admin Portal
+
+- Secure Admin Login with CAPTCHA verification
+- Dashboard with property statistics and live activity
+- View and manage all land records
+- Register new properties
+- Track ownership history
+- Interactive Property Map
+- Fraud Detection using Property ID and Owner details
+- Document Verification
+- Law Assistant for property-related legal information
+- Government Schemes Recommendation
+- Property Marketplace
+- Purchase Request Management
+- Bid Management System
+
+### Citizen Portal
+
+- Secure Citizen Login with CAPTCHA verification
+- Personal Dashboard
+- View owned properties
+- Property Map
+- Property Ownership History Search
+- Buy and Sell Properties
+- Property Marketplace
+- Government Scheme Eligibility
+- Law Assistant
+
+---
+
+## Technology Stack
+
+### Frontend
+- HTML5
+- CSS3
+- JavaScript
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- SQLite
+
+---
+
+## Login Credentials
+
+### Admin
+
+Username: admin
+
+Password: admin123
+
+### Citizen
+
+Username: Ravi
+
+Password: Ravi123
+
+---
+
+## Project Screenshots
+
+### Login Page
+
+![Login](screenshots/login.png)
+
+### Admin Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Property Market
+
+![Property Map](screenshots/propertymarket.png)
+
+### Fraud Detection
+
+![Property Map](screenshots/fraud_detection.png)
+
+### Government Schemes
+
+![Property Map](screenshots/govschemes.png)
+
+---
+
+## Project Modules
+
+### Property Management
+- Register properties
+- View property records
+- Property ownership history
+
+### Fraud Detection
+- Detect duplicate property registrations
+- Flag suspicious property records
+
+### Document Verification
+- Upload land-related documents
+- Verify submitted documents
+
+### Property Marketplace
+- Buy and Sell Properties
+- Purchase Requests
+- Bid Management
+
+### Government Services
+- Government Scheme Recommendation
+- Property Law Assistance
+
+---
+
+## Security Features
+
+- Role-based authentication
+- Separate Admin and Citizen dashboards
+- CAPTCHA verification during login
+- Property ownership validation
+- Fraud detection module
+
+---
+
+## How to Run Locally
+
+1. Clone the repository
+
+
+git clone <repository-url>
+
+
+2. Install dependencies
+
+
 npm install
-```
 
-### Step 2 — Configure environment
-```bash
-cp .env.example .env
-```
-Edit `.env` and set:
-- `JWT_SECRET` — change to a long random string
-- `ANTHROPIC_API_KEY` — your Claude API key (get from console.anthropic.com)
 
-### Step 3 — Seed the database
-```bash
-npm run seed
-```
-This creates `db/bhoomi.sqlite` with all demo data.
+3. Start the server
 
-### Step 4 — Start the server
-```bash
-# Development (auto-restart on file change)
-npm run dev
 
-# Production
-npm start
-```
+node server.js
 
-Server runs at **http://localhost:5000**
+
+4. Open the application in your browser.
 
 ---
 
-## 🔐 Login Credentials (after seeding)
+## Future Enhancements
 
-| Role    | Username   | Password     |
-|---------|------------|--------------|
-| Admin   | admin      | admin123     |
-| Admin   | collector  | col@2024     |
-| Citizen | ravi       | ravi123      |
-| Citizen | lakshmi    | lakshmi123   |
-| Citizen | suresh     | suresh123    |
-| Citizen | meera      | meera123     |
-| Citizen | ganesh     | ganesh123    |
-| Citizen | priya      | priya123     |
+- Aadhaar-based authentication
+- Email and SMS notifications
+- AI-powered fraud prediction
+- Online property registration
+- Digital signature support
+- Cloud deployment
 
 ---
 
-## 🔗 Connect Frontend to Backend
+## Developed By
 
-1. Copy `api.js` to your frontend folder (same folder as `bhoomi-v2.html`)
-2. Add this line in `bhoomi-v2.html` just before the closing `</body>` tag:
-   ```html
-   <script src="api.js"></script>
-   ```
-3. The frontend can now call:
-   ```js
-   // Login
-   const user = await BhoomiAPI.AuthAPI.login('admin', 'admin123', captcha);
+Developed as an academic full-stack project for digital land record management.
 
-   // Get all properties
-   const props = await BhoomiAPI.PropertiesAPI.list();
 
-   // Place a bid
-   await BhoomiAPI.BidsAPI.placeBid('KA-BLR-2024-002', {
-     bidder_name: 'Ravi Kumar',
-     bidder_phone: '+91 98765 43210',
-     amount: 2500000
-   });
-
-   // AI chat
-   const reply = await BhoomiAPI.AIAPI.chat('How to transfer land in Karnataka?');
-
-   // Fraud check
-   const result = await BhoomiAPI.AIAPI.fraudCheck('KA-TUM-2024-001');
-   ```
-
----
-
-## 📡 Full API Reference
-
-### Auth
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/auth/login` | None | Login with username + password |
-| POST | `/api/auth/logout` | JWT | Logout |
-| GET | `/api/auth/me` | JWT | Get current user |
-| POST | `/api/auth/change-password` | JWT | Change password |
-
-### Properties
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/properties` | JWT | List (admin=all, citizen=own) |
-| GET | `/api/properties/marketplace` | None | Public for-sale listings |
-| GET | `/api/properties/:id` | JWT | Single property + history + alerts |
-| POST | `/api/properties` | Admin | Register new property |
-| PUT | `/api/properties/:id` | Admin | Update property |
-| DELETE | `/api/properties/:id` | Admin | Delete property |
-| POST | `/api/properties/:id/list` | Owner/Admin | List for sale |
-| POST | `/api/properties/:id/unlist` | Owner/Admin | Remove from sale |
-| GET | `/api/properties/:id/history` | JWT | Ownership history |
-
-### Bids
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/bids/:propertyId` | JWT | Get all bids |
-| POST | `/api/bids/:propertyId` | JWT | Place a bid |
-| POST | `/api/bids/:propertyId/declare-winner` | Admin | Declare auction winner |
-
-### Purchase Requests
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/requests` | Admin | All purchase requests |
-| POST | `/api/requests` | JWT | Submit request |
-| PATCH | `/api/requests/:id` | Admin | Connect or reject |
-
-### AI Tools
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/ai/fraud-check` | Admin | AI fraud analysis |
-| POST | `/api/ai/verify-document` | JWT | Document verification |
-| POST | `/api/ai/chat` | JWT | Land law chatbot |
-| POST | `/api/ai/match-schemes` | JWT | Government scheme matching |
-| GET | `/api/ai/fraud-alerts` | Admin | All open fraud alerts |
-
-### Users
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/users` | Admin | All users |
-| POST | `/api/users` | Admin | Create user |
-| PATCH | `/api/users/:id/status` | Admin | Suspend/activate |
-| GET | `/api/users/activity` | Admin | Activity log |
-| GET | `/api/users/stats` | Admin | Dashboard stats |
-
----
-
-## 🛡️ Security Features
-
-- **JWT authentication** — tokens expire in 24 hours
-- **bcrypt password hashing** — industry standard
-- **Rate limiting** — 10 login attempts per 15 min, 200 API calls per 15 min
-- **Role-based access** — admin vs citizen permissions on every route
-- **Helmet** — sets secure HTTP headers
-- **CORS** — only allows your frontend URL
-- **Activity logging** — every action logged with IP address
-- **Input validation** — required fields checked on every endpoint
-
----
-
-## 🗄️ Database Tables
-
-| Table | Description |
-|-------|-------------|
-| `users` | Admin and citizen accounts |
-| `properties` | All land/property records |
-| `ownership_history` | Transfer timeline per property |
-| `bids` | Live auction bids |
-| `purchase_requests` | Buy requests for non-bidding listings |
-| `documents` | Uploaded documents |
-| `fraud_alerts` | AI-generated fraud flags |
-| `activity_log` | Full audit trail |
-| `sessions` | Active user sessions |
-
----
-
-## 🚀 Deploy to Production
-
-### Option A — VPS (Ubuntu)
-```bash
-# Install Node.js
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install nodejs
-
-# Install PM2 process manager
-npm install -g pm2
-
-# Start the app
-pm2 start server.js --name bhoomi-api
-pm2 save
-pm2 startup
-```
-
-### Option B — Railway / Render (free)
-1. Push to GitHub
-2. Connect repo to Railway.app or Render.com
-3. Set environment variables in their dashboard
-4. Deploy — they provide a public HTTPS URL
-
-### Option C — Docker
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --production
-COPY . .
-EXPOSE 5000
-CMD ["node", "server.js"]
-```
