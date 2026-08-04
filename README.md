@@ -72,23 +72,23 @@ Password: Ravi123
 
 ### Login Page
 
-![Login](screenshots/login.png)
+![Login](login.png)
 
 ### Admin Dashboard
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](dashboard.png)
 
 ### Property Market
 
-![Property Map](screenshots/propertymarket.png)
+![Property Map](propertymarket.png)
 
 ### Fraud Detection
 
-![Property Map](screenshots/fraud_detection.png)
+![Property Map](fraud_detection.png)
 
 ### Government Schemes
 
-![Property Map](screenshots/govschemes.png)
+![Property Map](govschemes.png)
 
 ---
 
